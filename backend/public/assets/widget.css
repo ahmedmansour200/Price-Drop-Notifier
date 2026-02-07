@@ -1,0 +1,226 @@
+/* Price Drop Widget Styles */
+/* Separated CSS for better maintainability and CSP compliance */
+
+:host {
+  --pdw-accent: #FF9900;
+  --pdw-bg: #ffffff;
+  --pdw-text: #1a1a1a;
+  --pdw-text-light: #666;
+  --pdw-border: #e0e0e0;
+  --pdw-error: #d32f2f;
+  --pdw-success: #388e3c;
+  
+  display: block;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--pdw-text);
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+.pdw-container {
+  background: var(--pdw-bg);
+  border: 1px solid var(--pdw-border);
+  border-radius: 8px;
+  padding: 16px;
+  max-width: 400px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  animation: pdw-fadeIn 0.3s ease-out;
+}
+
+@keyframes pdw-fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.pdw-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.pdw-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.pdw-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--pdw-text);
+}
+
+.pdw-description {
+  font-size: 13px;
+  color: var(--pdw-text-light);
+  margin: 0 0 16px 0;
+}
+
+.pdw-product-info {
+  background: #f8f8f8;
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 16px;
+  font-size: 12px;
+}
+
+.pdw-product-name {
+  font-weight: 600;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pdw-product-price {
+  color: var(--pdw-accent);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.pdw-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pdw-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid var(--pdw-border);
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s ease;
+  font-family: inherit;
+}
+
+.pdw-input:focus {
+  border-color: var(--pdw-accent);
+}
+
+.pdw-input::placeholder {
+  color: #999;
+}
+
+.pdw-button {
+  width: 100%;
+  padding: 10px 16px;
+  background: var(--pdw-accent);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  position: relative;
+  overflow: hidden;
+}
+
+.pdw-button:hover:not(:disabled) {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.pdw-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.pdw-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.pdw-button.submitting {
+  animation: pdw-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pdw-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.pdw-message {
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-top: 12px;
+  display: none;
+  animation: pdw-slideDown 0.3s ease-out;
+}
+
+@keyframes pdw-slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 100px;
+  }
+}
+
+.pdw-message.show {
+  display: block;
+}
+
+.pdw-message.success {
+  background: #e8f5e9;
+  color: var(--pdw-success);
+  border: 1px solid #c8e6c9;
+}
+
+.pdw-message.error {
+  background: #ffebee;
+  color: var(--pdw-error);
+  border: 1px solid #ffcdd2;
+}
+
+.pdw-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: pdw-spin 0.6s linear infinite;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+@keyframes pdw-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .pdw-container {
+    padding: 12px;
+  }
+  
+  .pdw-title {
+    font-size: 14px;
+  }
+  
+  .pdw-input,
+  .pdw-button {
+    font-size: 13px;
+  }
+}

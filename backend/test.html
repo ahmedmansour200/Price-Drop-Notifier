@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Price Drop Notifier - Test Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    h1 {
+      color: #333;
+    }
+    .section {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .test-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    button {
+      padding: 10px 20px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    #result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 4px;
+      background: #f0f0f0;
+      white-space: pre-wrap;
+      font-family: monospace;
+      font-size: 12px;
+    }
+    iframe {
+      width: 100%;
+      height: 500px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔔 Price Drop Notifier - Test Page</h1>
+  
+  <div class="section">
+    <h2>API Tests</h2>
+    <div class="test-buttons">
+      <button onclick="testSuccess()">✅ Test Success</button>
+      <button onclick="testInvalidEmail()">❌ Test Invalid Email</button>
+      <button onclick="testAlreadySubscribed()">🔄 Test Already Subscribed</button>
+      <button onclick="testFormEncoded()">📝 Test Form-Encoded</button>
+    </div>
+    <div id="result"></div>
+  </div>
+
+  <div class="section">
+    <h2>Embed Widget (iframe)</h2>
+    <iframe src="http://localhost:3000/embed/price-drop.html?name=iPhone%2015%20Pro&price=$1199&url=https://apple.com/iphone"></iframe>
+  </div>
+
+  <script>
+    const resultDiv = document.getElementById('result');
+    
+    async function testSuccess() {
+      resultDiv.textContent = 'Testing... (this may take 0.8-2.8 seconds)';
+      const start = Date.now();
+      
+      try {
+        const response = await fetch('http://localhost:3000/subscribe-price-drop', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(
+          {
+            email: `user${Date.now()}@example.com`,
+            product: { name: 'iPhone 15', price: "$999", url: "https://example.com/iphone" }
+      })
+        });
+        
+        const data = await response.json();
+        const duration = Date.now() - start;
+        
+        resultDiv.textContent = `✅ SUCCESS (${duration}ms)\n\nStatus: ${response.status}\nResponse:\n${JSON.stringify(data, null, 2)}`;
+      } catch (error) {
+        resultDiv.textContent = `❌ ERROR\n\n${error.message}`;
+      }
+    }
+    
+    async function testInvalidEmail() {
+      resultDiv.textContent = 'Testing...';
+      const start = Date.now();
+      
+      try {
+        const response = await fetch('http://localhost:3000/subscribe-price-drop', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({email: `user${Date.now()}@example.com`,
+            product: { name: 'iPhone 15', price: "$999", url: "https://example.com/iphone" }})
+        });
+        
+        const data = await response.json();
+        const duration = Date.now() - start;
+        
+        resultDiv.textContent = `❌ INVALID EMAIL TEST (${duration}ms)\n\nStatus: ${response.status}\nResponse:\n${JSON.stringify(data, null, 2)}`;
+      } catch (error) {
+        resultDiv.textContent = `❌ ERROR\n\n${error.message}`;
+      }
+    }
+    
+    async function testAlreadySubscribed() {
+      resultDiv.textContent = 'Testing...';
+      const start = Date.now();
+      
+      try {
+        // Subscribe first time
+        await fetch('http://localhost:3000/subscribe-price-drop', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+           body: JSON.stringify({email: `user${Date.now()}@example.com`,
+            product: { name: 'iPhone 15', price: "$999", url: "https://example.com/iphone" }})
+        });
+        
+        // Try to subscribe again
+        const response = await fetch('http://localhost:3000/subscribe-price-drop', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+           body: JSON.stringify({email: `user${Date.now()}@example.com`,
+            product: { name: 'iPhone 15', price: "$999", url: "https://example.com/iphone" }})
+        });
+        
+        const data = await response.json();
+        const duration = Date.now() - start;
+        
+        resultDiv.textContent = `🔄 ALREADY SUBSCRIBED TEST (${duration}ms)\n\nStatus: ${response.status}\nResponse:\n${JSON.stringify(data, null, 2)}`;
+      } catch (error) {
+        resultDiv.textContent = `❌ ERROR\n\n${error.message}`;
+      }
+    }
+    
+    async function testFormEncoded() {
+      resultDiv.textContent = 'Testing...';
+      const start = Date.now();
+      
+      try {
+        const params = new URLSearchParams({
+          email: `form${Date.now()}@example.com`,
+          product:{name: 'iPhone 15',
+          price: '$999',
+          url: 'https://example.com/iphone'}
+        });
+        
+        const response = await fetch('http://localhost:3000/subscribe-price-drop', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: params.toString()
+        });
+        
+        const data = await response.json();
+        const duration = Date.now() - start;
+        
+        resultDiv.textContent = `📝 FORM-ENCODED TEST (${duration}ms)\n\nStatus: ${response.status}\nResponse:\n${JSON.stringify(data, null, 2)}`;
+      } catch (error) {
+        resultDiv.textContent = `❌ ERROR\n\n${error.message}`;
+      }
+    }
+  </script>
+</body>
+</html>

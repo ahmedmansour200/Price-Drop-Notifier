@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Widget Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    h1 {
+      color: #333;
+    }
+    #test-status {
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 5px;
+      background: #fff;
+      border: 2px solid #ddd;
+    }
+    .success { border-color: #4caf50; background: #e8f5e9; }
+    .error { border-color: #f44336; background: #ffebee; }
+  </style>
+</head>
+<body>
+  <h1>🧪 Widget Test Page</h1>
+  
+  <div id="test-status">Loading widget...</div>
+  
+  <div id="price-drop-widget-root"></div>
+  
+  <script src="/assets/price-drop-widget.min.js"></script>
+  <script>
+    const status = document.getElementById('test-status');
+    
+    try {
+      // Check if PriceDropWidget is defined
+      if (typeof PriceDropWidget === 'undefined') {
+        status.className = 'error';
+        status.innerHTML = '❌ ERROR: PriceDropWidget is not defined!<br>Check console for details.';
+        console.error('PriceDropWidget not found on window object');
+      } else {
+        status.className = 'success';
+        status.innerHTML = '✅ SUCCESS: PriceDropWidget loaded correctly!<br>Type: ' + typeof PriceDropWidget;
+        console.log('PriceDropWidget:', PriceDropWidget);
+        
+        // Initialize widget
+        const widget = new PriceDropWidget({
+          apiEndpoint: '/subscribe-price-drop',
+          product: {
+            name: 'Test Product - Premium Widget',
+            price: '$99.99',
+            url: window.location.href
+          }
+        });
+        
+        widget.init();
+        console.log('Widget initialized successfully');
+      }
+    } catch (error) {
+      status.className = 'error';
+      status.innerHTML = '❌ ERROR: ' + error.message;
+      console.error('Widget initialization error:', error);
+    }
+  </script>
+</body>
+</html>

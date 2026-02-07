@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Price Drop Notifier - Demo</title>
+  <link rel="stylesheet" href="/demo.css">
+</head>
+<body>
+  <div class="demo-container">
+    <header class="demo-header">
+      <h1>🔔 Price Drop Notifier Widget</h1>
+      <p class="demo-subtitle">Embeddable widget for e-commerce price alerts</p>
+    </header>
+
+    <main class="demo-main">
+      <section class="demo-section">
+        <h2>Live Widget Demo</h2>
+        <p class="demo-description">
+          This widget can be embedded on any e-commerce website to collect email subscriptions for price drop notifications.
+        </p>
+        
+        <div class="demo-widget-wrapper">
+          <div id="price-drop-widget-root"></div>
+        </div>
+      </section>
+
+      <section class="demo-section">
+        <h2>Features</h2>
+        <ul class="demo-features">
+          <li>✅ Shadow DOM for complete style isolation</li>
+          <li>✅ Responsive design adapts to container width</li>
+          <li>✅ Smooth animations on submit and state changes</li>
+          <li>✅ Email validation with clear error messages</li>
+          <li>✅ Network resilience with timeout handling</li>
+          <li>✅ Bundle size &lt;12 KB gzipped</li>
+          <li>✅ No dependencies, vanilla TypeScript</li>
+          <li>✅ CSP-compliant (no inline scripts/styles)</li>
+        </ul>
+      </section>
+
+      <section class="demo-section">
+        <h2>Integration Methods</h2>
+        
+        <div class="demo-code-block">
+          <h3>Method 1: Script Embed (UMD)</h3>
+          <pre><code>&lt;div id="price-drop-widget-root"&gt;&lt;/div&gt;
+&lt;script src="https://your-domain.com/assets/price-drop-widget.min.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  new PriceDropWidget({
+    apiEndpoint: 'https://your-api.com/subscribe',
+    product: {
+      name: 'iPhone 15 Pro',
+      price: '$999',
+      url: 'https://store.com/product'
+    }
+  }).init();
+&lt;/script&gt;</code></pre>
+        </div>
+
+        <div class="demo-code-block">
+          <h3>Method 2: Iframe Embed (CSP Fallback)</h3>
+          <pre><code>&lt;iframe 
+  src="https://your-domain.com/embed/price-drop.html?name=Product&price=$99&url=https://..." 
+  width="100%" 
+  height="300"
+  style="border:none;"
+&gt;&lt;/iframe&gt;</code></pre>
+        </div>
+
+        <div class="demo-code-block">
+          <h3>Method 3: Userscript (Tampermonkey)</h3>
+          <pre><code>// Automatically injects on Amazon, eBay, AliExpress
+// Install: price-drop-injector.user.js
+// Detects product info and inserts widget
+// Persists subscription state to avoid repeated prompts</code></pre>
+        </div>
+      </section>
+
+      <section class="demo-section">
+        <h2>API Endpoint</h2>
+        <div class="demo-code-block">
+          <h3>POST /subscribe-price-drop</h3>
+          <pre><code>{
+  "email": "user@example.com",
+  "product": {
+    "name": "Product Name",
+    "price": "$99.99",
+    "url": "https://example.com/product"
+  }
+}</code></pre>
+          <p class="demo-api-note">
+            <strong>Responses:</strong><br>
+            200: <code>{ "ok": true }</code><br>
+            400: <code>{ "ok": false, "error": "invalid_email" }</code><br>
+            409: <code>{ "ok": false, "error": "already_subscribed" }</code><br>
+            503: <code>{ "ok": false, "error": "server_error" }</code>
+          </p>
+        </div>
+      </section>
+
+      <section class="demo-section">
+        <h2>Browser Support</h2>
+        <p class="demo-description">
+          Modern browsers with Shadow DOM support (Chrome 53+, Firefox 63+, Safari 10+, Edge 79+)
+        </p>
+      </section>
+    </main>
+
+    <footer class="demo-footer">
+      <p>Built with TypeScript • No frameworks • CSP-compliant</p>
+    </footer>
+  </div>
+
+  <script src="/demo.js"></script>
+</body>
+</html>

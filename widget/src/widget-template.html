@@ -1,0 +1,29 @@
+<!-- Price Drop Widget HTML Template -->
+<!-- Separated HTML for better maintainability -->
+
+<div class="pdw-container">
+  <div class="pdw-header">
+    <span class="pdw-icon">🔔</span>
+    <h3 class="pdw-title">Price Drop Alert</h3>
+  </div>
+  <p class="pdw-description">Get notified when the price drops!</p>
+  <div class="pdw-product-info">
+    <div class="pdw-product-name" data-pdw="product-name"></div>
+    <div class="pdw-product-price" data-pdw="product-price"></div>
+  </div>
+  <form class="pdw-form" id="pdw-form">
+    <input 
+      type="email" 
+      class="pdw-input" 
+      id="pdw-email" 
+      placeholder="your.email@example.com" 
+      required 
+      autocomplete="email"
+      aria-label="Email address"
+    />
+    <button type="submit" class="pdw-button" id="pdw-submit">
+      Notify Me
+    </button>
+  </form>
+  <div class="pdw-message" id="pdw-message" role="alert"></div>
+</div>
