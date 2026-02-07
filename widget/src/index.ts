@@ -36,7 +36,7 @@ class PriceDropWidget {
 
     constructor(config: WidgetConfig = {}) {
         this.config = {
-            apiEndpoint: config.apiEndpoint || window.location.origin + '/subscribe-price-drop',
+            apiEndpoint: config.apiEndpoint || '/subscribe-price-drop',
             product: config.product || this.extractProductData(),
             containerId: config.containerId || 'price-drop-widget-root',
             cssUrl: config.cssUrl || '/assets/widget.css',
