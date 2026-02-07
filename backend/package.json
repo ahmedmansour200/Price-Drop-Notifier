@@ -1,18 +1,16 @@
 {
-  "name": "price-drop-notifier-backend",
+  "name": "price-drop-backend",
   "version": "1.0.0",
-  "description": "Backend API for Price Drop Notifier Widget",
+  "private": true,
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
+    "start": "node server.js"
   },
-  "keywords": ["express", "price-drop", "notifier"],
-  "author": "",
-  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
   "dependencies": {
-    "express": "^4.18.2",
-    "compression": "^1.7.4",
+    "express": "^4.19.0",
     "cors": "^2.8.5"
   }
 }
