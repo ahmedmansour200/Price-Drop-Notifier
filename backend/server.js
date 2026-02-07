@@ -353,7 +353,7 @@ module.exports = app;
 
 // Start server (only in development)
 if (require.main === module) {
-  const server = app.listen(PORT, () => {
+  const server = app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Price Drop Notifier Backend running on http://localhost:${PORT}`);
     console.log(`📦 Widget: http://localhost:${PORT}/assets/price-drop-widget.min.js`);
     console.log(`🖼️  Embed: http://localhost:${PORT}/embed/price-drop.html?name=Product&price=$99&url=https://example.com`);
