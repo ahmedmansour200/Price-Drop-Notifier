@@ -11,16 +11,16 @@ const subscriptions = [];
 const subscribedEmails = new Set();
 
 // Middleware: Logging
-app.use((req, res, next) => {
-  const startTime = Date.now();
+// app.use((req, res, next) => {
+//   const startTime = Date.now();
   
-  res.on('finish', () => {
-    const latency = Date.now() - startTime;
-    console.log(`[${new Date().toISOString()}] ${req.method} ${req.path} - ${res.statusCode} (${latency}ms)`);
-  });
+//   res.on('finish', () => {
+//     const latency = Date.now() - startTime;
+//     console.log(`[${new Date().toISOString()}] ${req.method} ${req.path} - ${res.statusCode} (${latency}ms)`);
+//   });
   
-  next();
-});
+//   next();
+// });
 // Middleware: CORS
 app.use(cors());
 
@@ -62,14 +62,6 @@ app.get('/', (req, res) => {
   });
 });
 
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'healthy',
-    uptime: process.uptime(),
-    timestamp: new Date().toISOString()
-  });
-});
 
 // POST /subscribe-price-drop
 app.post('/subscribe-price-drop', async (req, res) => {
@@ -112,7 +104,7 @@ app.post('/subscribe-price-drop', async (req, res) => {
       price: product?.price || 'N/A',
       url: product?.url || ''
     },
-    subscribedAt: new Date().toISOString()
+    subscribedAt: new Date().toISOString() // add new field for subscription timestamp
   };
   
   subscriptions.push(subscription);

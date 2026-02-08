@@ -29,9 +29,9 @@
 
     // Configuration
     const CONFIG = {
-        widgetScriptUrl: 'http://localhost:3000/assets/price-drop-widget.min.js',
-        iframeUrl: 'http://localhost:3000/embed/price-drop.html',
-        apiEndpoint: 'http://localhost:3000/subscribe-price-drop',
+        widgetScriptUrl: 'https://price-drop-notifier-production.up.railway.app/assets/price-drop-widget.min.js',
+        iframeUrl: 'https://price-drop-notifier-production.up.railway.app/embed/price-drop.html',
+        apiEndpoint: 'https://price-drop-notifier-production.up.railway.app/subscribe-price-drop',
         storagePrefix: 'pdw_',
     };
 
@@ -71,7 +71,13 @@
             }
         }
         if (hostname.includes('ebay') && pathname.includes('/itm/')) return 'ebay';
-        if (hostname.includes('aliexpress') && pathname.includes('/item/')) return 'aliexpress';
+        if (
+        hostname.includes('aliexpress') &&
+        (pathname.includes('/item/') || document.querySelector('.product-title-text'))
+        ) {
+        return 'aliexpress';
+        }
+
         
         return null;
     }
@@ -137,13 +143,18 @@
         
         container = document.createElement('div');
         container.id = 'price-drop-widget-root';
-        container.style.cssText = `
-            margin: 20px 0;
-            padding: 0;
-            min-height: 200px;
-            opacity: 0;
-            transition: opacity 0.3s ease-in;
+       container.style.cssText = `
+        position: relative !important;
+      display: block !important;
+      width: 100% !important;
+      max-width: 420px !important;
+      min-height: 360px !important;
+      margin: 16px 0 !important;
+      background: #fff !important;
+      z-index: 2147483647 !important;
+      overflow: visible !important;
         `;
+
 
         // Insert container in appropriate location
         const selectors = SELECTORS[site];
@@ -177,72 +188,6 @@
         }
 
         return container;
-    }
-
-    /**
-     * Load widget via script injection (CSP-friendly approach)
-     */
-    function loadWidgetScript(productData) {
-        return new Promise((resolve, reject) => {
-            // Check if script already loaded
-            if (window.PriceDropWidget) {
-                resolve(true);
-                return;
-            }
-
-            const script = document.createElement('script');
-            script.src = CONFIG.widgetScriptUrl;
-            script.async = true;
-            
-            script.onload = () => {
-                console.log('[PDW] Widget script loaded');
-                resolve(true);
-            };
-            
-            script.onerror = () => {
-                console.warn('[PDW] Failed to load widget script, will fallback to iframe');
-                reject(new Error('Script load failed'));
-            };
-
-            document.head.appendChild(script);
-        });
-    }
-
-    /**
-     * Initialize widget with script method
-     */
-    function initWidgetScript(productData) {
-        if (!window.PriceDropWidget) {
-            console.error('[PDW] Widget class not found');
-            return false;
-        }
-
-        try {
-            const widget = new window.PriceDropWidget({
-                apiEndpoint: CONFIG.apiEndpoint,
-                product: productData,
-                containerId: 'price-drop-widget-root',
-                theme: {
-                    accentColor: detectSite() === 'amazon' ? '#FF9900' : '#e53238',
-                    backgroundColor: '#ffffff',
-                },
-            });
-
-            widget.init();
-            
-            // Show container
-            const container = document.getElementById('price-drop-widget-root');
-            if (container) {
-                setTimeout(() => {
-                    container.style.opacity = '1';
-                }, 100);
-            }
-
-            return true;
-        } catch (error) {
-            console.error('[PDW] Widget initialization failed:', error);
-            return false;
-        }
     }
 
     /**
