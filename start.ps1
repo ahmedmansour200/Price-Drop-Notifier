@@ -24,14 +24,14 @@ if (-not (Test-Path "node_modules")) {
 }
 
 Write-Host "Compiling TypeScript and creating bundles..." -ForegroundColor Gray
-npm run build --silent
+npm run build
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "❌ Widget build failed" -ForegroundColor Red
     exit 1
 }
 
-Write-Host "✓ Widget built successfully (3.21 KB gzipped)" -ForegroundColor Green
+Write-Host "✓ Widget built successfully (3.38 KB gzipped)" -ForegroundColor Green
 
 # Copy widget to backend
 Write-Host ""

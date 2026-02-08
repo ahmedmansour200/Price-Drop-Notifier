@@ -35,9 +35,11 @@ Subscribe to price drop alerts for a product.
 ```json
 {
   "email": "user@example.com",
-  "productName": "iPhone 15",
-  "productPrice": "$999",
-  "productUrl": "https://example.com/iphone"
+  "product":{
+    "name": "iPhone 15",
+    "price": "$999",
+    "url": "https://example.com/iphone"
+  }
 }
 ```
 
@@ -76,7 +78,8 @@ Test the API endpoint:
 # Success case
 curl -X POST http://localhost:3000/subscribe-price-drop \
   -H "Content-Type: application/json" \
-  -d '{"email":"test@example.com","productName":"Test Product","productPrice":"$99","productUrl":"https://example.com"}'
+  -d '{"email":"test@example.com",
+  "product":{"name":"Test Product","price":"$99","url":"https://example.com"}}'
 
 # Invalid email
 curl -X POST http://localhost:3000/subscribe-price-drop \

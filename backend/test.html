@@ -65,7 +65,6 @@
       <button onclick="testSuccess()">✅ Test Success</button>
       <button onclick="testInvalidEmail()">❌ Test Invalid Email</button>
       <button onclick="testAlreadySubscribed()">🔄 Test Already Subscribed</button>
-      <button onclick="testFormEncoded()">📝 Test Form-Encoded</button>
     </div>
     <div id="result"></div>
   </div>
@@ -110,7 +109,7 @@
         const response = await fetch('http://localhost:3000/subscribe-price-drop', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({email: `user${Date.now()}@example.com`,
+          body: JSON.stringify({email: `user${Date.now()}`,
             product: { name: 'iPhone 15', price: "$999", url: "https://example.com/iphone" }})
         });
         
@@ -132,7 +131,7 @@
         await fetch('http://localhost:3000/subscribe-price-drop', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-           body: JSON.stringify({email: `user${Date.now()}@example.com`,
+           body: JSON.stringify({email: `ahmedmansour@example.com`,
             product: { name: 'iPhone 15', price: "$999", url: "https://example.com/iphone" }})
         });
         
@@ -140,7 +139,7 @@
         const response = await fetch('http://localhost:3000/subscribe-price-drop', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-           body: JSON.stringify({email: `user${Date.now()}@example.com`,
+           body: JSON.stringify({email: `ahmedmansour@example.com`,
             product: { name: 'iPhone 15', price: "$999", url: "https://example.com/iphone" }})
         });
         
@@ -153,32 +152,6 @@
       }
     }
     
-    async function testFormEncoded() {
-      resultDiv.textContent = 'Testing...';
-      const start = Date.now();
-      
-      try {
-        const params = new URLSearchParams({
-          email: `form${Date.now()}@example.com`,
-          product:{name: 'iPhone 15',
-          price: '$999',
-          url: 'https://example.com/iphone'}
-        });
-        
-        const response = await fetch('http://localhost:3000/subscribe-price-drop', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: params.toString()
-        });
-        
-        const data = await response.json();
-        const duration = Date.now() - start;
-        
-        resultDiv.textContent = `📝 FORM-ENCODED TEST (${duration}ms)\n\nStatus: ${response.status}\nResponse:\n${JSON.stringify(data, null, 2)}`;
-      } catch (error) {
-        resultDiv.textContent = `❌ ERROR\n\n${error.message}`;
-      }
-    }
   </script>
 </body>
 </html>
