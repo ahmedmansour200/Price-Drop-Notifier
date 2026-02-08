@@ -21,11 +21,6 @@ app.use((req, res, next) => {
   
   next();
 });
-app.get('/', (req, res) => {
-  res.status(200).send('OK - Server is alive');
-});
-
-app.use(express.static(path.join(__dirname, 'dist')));
 // Middleware: CORS
 app.use(cors());
 
