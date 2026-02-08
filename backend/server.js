@@ -48,6 +48,30 @@ const isValidEmail = (email) => {
 // Helper: Simulate random server error (10% chance)
 const shouldSimulateServerError = () => Math.random() < 0.1;
 
+// Health check endpoint for Railway
+app.get('/', (req, res) => {
+  res.json({
+    status: 'ok',
+    message: 'Price Drop Notifier API',
+    version: '2.0.0',
+    endpoints: {
+      widget: '/assets/price-drop-widget.min.js',
+      demo: '/demo.html',
+      api: '/subscribe-price-drop',
+      subscriptions: '/subscriptions/view'
+    }
+  });
+});
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ 
+    status: 'healthy',
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString()
+  });
+});
+
 // POST /subscribe-price-drop
 app.post('/subscribe-price-drop', async (req, res) => {
   await randomDelay();
@@ -351,25 +375,23 @@ app.get('/embed/price-drop.html', (req, res) => {
 // Export for Vercel serverless
 module.exports = app;
 
-// Start server (only in development)
-if (require.main === module) {
-  const server = app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 Price Drop Notifier Backend running on http://localhost:${PORT}`);
-    console.log(`📦 Widget: http://localhost:${PORT}/assets/price-drop-widget.min.js`);
-    console.log(`🖼️  Embed: http://localhost:${PORT}/embed/price-drop.html?name=Product&price=$99&url=https://example.com`);
-    console.log(`📊 Subscriptions: http://localhost:${PORT}/subscriptions/view`);
-    console.log(`\nServer is running. Press Ctrl+C to stop.`);
-  });
+// Start server (always start in Railway/production)
+const server = app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Price Drop Notifier Backend running on port ${PORT}`);
+  console.log(`📦 Widget: /assets/price-drop-widget.min.js`);
+  console.log(`🖼️  Embed: /embed/price-drop.html`);
+  console.log(`📊 Subscriptions: /subscriptions/view`);
+  console.log(`\nServer is running. Environment: ${process.env.NODE_ENV || 'development'}`);
+});
 
-  server.on('error', (err) => {
-    if (err.code === 'EADDRINUSE') {
-      console.error(`❌ Port ${PORT} is already in use. Please close the other instance or use a different port.`);
-    } else {
-      console.error('❌ Server error:', err);
-    }
-    process.exit(1);
-  });
-}
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`❌ Port ${PORT} is already in use.`);
+  } else {
+    console.error('❌ Server error:', err);
+  }
+  process.exit(1);
+});
 
 
 
