@@ -10,17 +10,6 @@ const PORT = process.env.PORT || 3000;
 const subscriptions = [];
 const subscribedEmails = new Set();
 
-// Middleware: Logging
-// app.use((req, res, next) => {
-//   const startTime = Date.now();
-  
-//   res.on('finish', () => {
-//     const latency = Date.now() - startTime;
-//     console.log(`[${new Date().toISOString()}] ${req.method} ${req.path} - ${res.statusCode} (${latency}ms)`);
-//   });
-  
-//   next();
-// });
 // Middleware: CORS
 app.use(cors());
 
